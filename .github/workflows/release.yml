@@ -19,6 +19,7 @@ jobs:
         with:
           node-version: 21.x
           registry-url: https://npm.pkg.github.com/
+          scope: '@${{ github.repository_owner }}'
 
       - name: Install GitVersion
         uses: gittools/actions/gitversion/setup@v0.10.2
@@ -40,7 +41,9 @@ jobs:
         run: npm test
           
       - name: Publish package 
-        run: npm publish
+        run: |
+          npm pkg set name="@${{ github.repository_owner }}/package-recipe"
+          npm publish --registry=https://npm.pkg.github.com/
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 

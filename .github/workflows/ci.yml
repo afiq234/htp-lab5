@@ -151,6 +151,7 @@ jobs:
         with:
           node-version: 21.x
           registry-url: https://npm.pkg.github.com/
+          scope: '@${{ github.repository_owner }}'
 
       - name: 'Change NPM version'
         uses: reedyuk/npm-version@1.2.2
@@ -164,6 +165,8 @@ jobs:
         run: npm test
             
       - name: Publish package 
-        run: npm publish
+        run: |
+          npm pkg set name="@${{ github.repository_owner }}/package-recipe"
+          npm publish --registry=https://npm.pkg.github.com/
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
